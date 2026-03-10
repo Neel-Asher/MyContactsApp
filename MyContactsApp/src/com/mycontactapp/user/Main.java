@@ -4,9 +4,13 @@ import java.util.Optional;
 import java.util.Scanner;
 
 import com.mycontactapp.user.auth.BasicAuthStrategy;
+import com.mycontactapp.user.command.ChangePasswordCommand;
+import com.mycontactapp.user.command.UpdateNameCommand;
+import com.mycontactapp.user.command.UpdatePreferencesCommand;
 import com.mycontactapp.user.model.User;
 import com.mycontactapp.user.repository.UserRepository;
 import com.mycontactapp.user.service.AuthenticationService;
+import com.mycontactapp.user.service.ProfileService;
 import com.mycontactapp.user.service.RegistrationService;
 import com.mycontactapp.user.session.SessionManager;
 
@@ -19,6 +23,7 @@ public class Main {
         RegistrationService registrationService = new RegistrationService();
         AuthenticationService authService =
                 new AuthenticationService(new BasicAuthStrategy());
+        ProfileService profileService = new ProfileService();
 
         UserRepository repo = UserRepository.getInstance();
 
@@ -61,10 +66,63 @@ public class Main {
 
                 System.out.println("Login successful!");
 
-                System.out.println(
-                        "Welcome " +
-                        SessionManager.getInstance().getCurrentUser().getFirstName()
-                );
+                User currentUser = SessionManager.getInstance().getCurrentUser();
+
+                System.out.println("Welcome " + currentUser.getFirstName());
+
+                System.out.println("\n=== PROFILE MANAGEMENT ===");
+
+                System.out.println("1. Update Name");
+                System.out.println("2. Change Password");
+                System.out.println("3. Update Preference");
+
+                System.out.print("Choose option: ");
+                int choice = Integer.parseInt(sc.nextLine());
+
+                switch (choice) {
+
+                    case 1:
+
+                        System.out.print("New First Name: ");
+                        String fn = sc.nextLine();
+
+                        System.out.print("New Last Name: ");
+                        String ln = sc.nextLine();
+
+                        profileService.executeCommand(
+                                new UpdateNameCommand(currentUser, fn, ln));
+
+                        System.out.println("Name updated successfully.");
+                        break;
+
+                    case 2:
+
+                        System.out.print("New Password: ");
+                        String newPass = sc.nextLine();
+
+                        profileService.executeCommand(
+                                new ChangePasswordCommand(currentUser, newPass));
+
+                        System.out.println("Password updated successfully.");
+                        break;
+
+                    case 3:
+
+                        System.out.print("Preference Key: ");
+                        String key = sc.nextLine();
+
+                        System.out.print("Preference Value: ");
+                        String value = sc.nextLine();
+
+                        profileService.executeCommand(
+                                new UpdatePreferencesCommand(currentUser, key, value));
+
+                        System.out.println("Preference updated.");
+                        break;
+
+                    default:
+                        System.out.println("Invalid option.");
+                }
 
             } else {
 
