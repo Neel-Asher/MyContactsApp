@@ -1,5 +1,6 @@
 package com.mycontactapp.user;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -10,6 +11,11 @@ import com.mycontactapp.contact.bulk.BulkOperationService;
 import com.mycontactapp.contact.bulk.ExportService;
 import com.mycontactapp.contact.composite.ContactGroup;
 import com.mycontactapp.contact.composite.SingleContact;
+import com.mycontactapp.contact.filter.CompositeFilter;
+import com.mycontactapp.contact.filter.ContactFilter;
+import com.mycontactapp.contact.filter.FilterService;
+import com.mycontactapp.contact.filter.FrequentContactFilter;
+import com.mycontactapp.contact.filter.TagFilter;
 import com.mycontactapp.contact.model.Contact;
 import com.mycontactapp.contact.search.ContactSearchService;
 import com.mycontactapp.contact.search.CriteriaChain;
@@ -46,9 +52,10 @@ public class Main {
         ContactService contactService = new ContactService();
         
         BulkOperationService bulkService = new BulkOperationService();
-        ExportService exportService = new ExportService();
         
         ContactSearchService searchService = new ContactSearchService();
+        
+        FilterService filterService = new FilterService();	
 
         try {
 
@@ -104,6 +111,7 @@ public class Main {
                 System.out.println("7. Delete Contact");
                 System.out.println("8. Bulk Delete");
                 System.out.println("9. Search Contacts");
+                System.out.println("10. Advanced Search");
 
                 System.out.print("Choose option: ");
                 int choice = Integer.parseInt(sc.nextLine());
@@ -262,6 +270,27 @@ public class Main {
                     	results.forEach(c ->
                     	        System.out.println(c.getName()+" "+c.getId())
                     	);
+                    	break;
+                    
+                    case 10:
+                    	
+                    	ContactFilter filter = new TagFilter("work");
+
+                    	List<Contact> results1 =
+                    	        filterService.filter(filter);
+
+                    	results1.forEach(c -> System.out.println(c.getName()));
+                    	
+                    	CompositeFilter filter1 = new CompositeFilter();
+
+                    	filter1.addFilter(new TagFilter("work"));
+                    	filter1.addFilter(new FrequentContactFilter(5));
+                    	
+                    	List<Contact> results2 =
+                    	        filterService.filterAndSort(
+                    	                filter1,
+                    	                Comparator.comparing(Contact::getName)
+                    	        );
                     	break;
                     
                     default:

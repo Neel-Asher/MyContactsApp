@@ -16,6 +16,8 @@ public abstract class Contact {
     private final LocalDateTime createdAt;
     
     private List<String> tags = new ArrayList<>();
+    
+    private int interactionCount;
 
     protected Contact(String name,List<PhoneNumber> phones,List<EmailAddress> emails) {
 
@@ -83,5 +85,13 @@ public abstract class Contact {
 
         return tags;
 
+    }
+    
+    public int getInteractionCount(){
+        return interactionCount;
+    }
+
+    public void incrementInteraction(){
+        interactionCount++;
     }
 }
