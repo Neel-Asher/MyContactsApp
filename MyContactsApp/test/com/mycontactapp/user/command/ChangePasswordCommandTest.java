@@ -16,8 +16,8 @@ public class ChangePasswordCommandTest {
         User user = new FreeUser(
                 "test@mail.com",
                 "oldhash",
-                "John",
-                "Doe"
+                "Neel",
+                "Asher"
         );
 
         ChangePasswordCommand cmd =

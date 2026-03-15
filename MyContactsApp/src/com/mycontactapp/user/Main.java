@@ -3,6 +3,8 @@ package com.mycontactapp.user;
 import java.util.Optional;
 import java.util.Scanner;
 
+import com.mycontactapp.contact.builder.ContactBuilder;
+import com.mycontactapp.contact.service.ContactService;
 import com.mycontactapp.user.auth.BasicAuthStrategy;
 import com.mycontactapp.user.command.ChangePasswordCommand;
 import com.mycontactapp.user.command.UpdateNameCommand;
@@ -26,6 +28,8 @@ public class Main {
         ProfileService profileService = new ProfileService();
 
         UserRepository repo = UserRepository.getInstance();
+        
+        ContactService contactService = new ContactService();
 
         try {
 
@@ -75,6 +79,7 @@ public class Main {
                 System.out.println("1. Update Name");
                 System.out.println("2. Change Password");
                 System.out.println("3. Update Preference");
+                System.out.println("4. Create Contact");
 
                 System.out.print("Choose option: ");
                 int choice = Integer.parseInt(sc.nextLine());
@@ -104,7 +109,7 @@ public class Main {
                                 new ChangePasswordCommand(currentUser, newPass));
 
                         System.out.println("Password updated successfully.");
-                        break;
+                        break; 
 
                     case 3:
 
@@ -119,6 +124,19 @@ public class Main {
 
                         System.out.println("Preference updated.");
                         break;
+                    
+                    case 4:
+                    	
+                    	ContactBuilder builder = new ContactBuilder()
+                        .setType(ContactBuilder.ContactType.PERSON)
+                        .setName("Rohan Malhotra")
+                        .addPhone("9999999999")
+                        .addEmail("rohan@mail.com");
+
+                    	contactService.createContact(builder);
+
+						System.out.println("Contact created successfully.");
+						break;
 
                     default:
                         System.out.println("Invalid option.");
