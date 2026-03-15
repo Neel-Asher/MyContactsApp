@@ -1,7 +1,7 @@
 # MyContactsApp
 MyContacts App is a Java-based, console-driven application implemented use-case wise to demonstrate object-oriented design, design patterns, and core Java concepts through a contact management system.
 
-## UC3: User Profile Management
+## UC2: User Authentication & Login
 
 + Allows registered users to log in using their email and password.
 + Introduces an AuthenticationStrategy interface to support multiple authentication mechanisms.
