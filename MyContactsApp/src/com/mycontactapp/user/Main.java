@@ -11,6 +11,9 @@ import com.mycontactapp.contact.bulk.ExportService;
 import com.mycontactapp.contact.composite.ContactGroup;
 import com.mycontactapp.contact.composite.SingleContact;
 import com.mycontactapp.contact.model.Contact;
+import com.mycontactapp.contact.search.ContactSearchService;
+import com.mycontactapp.contact.search.CriteriaChain;
+import com.mycontactapp.contact.search.NameCriteria;
 import com.mycontactapp.contact.service.ContactService;
 import com.mycontactapp.contact.view.BaseContactView;
 import com.mycontactapp.contact.view.ContactView;
@@ -44,6 +47,8 @@ public class Main {
         
         BulkOperationService bulkService = new BulkOperationService();
         ExportService exportService = new ExportService();
+        
+        ContactSearchService searchService = new ContactSearchService();
 
         try {
 
@@ -98,6 +103,7 @@ public class Main {
                 System.out.println("6. Edit Contact");
                 System.out.println("7. Delete Contact");
                 System.out.println("8. Bulk Delete");
+                System.out.println("9. Search Contacts");
 
                 System.out.print("Choose option: ");
                 int choice = Integer.parseInt(sc.nextLine());
@@ -243,6 +249,19 @@ public class Main {
                     	bulkService.bulkDelete(group);
 
                     	System.out.println("Bulk delete completed.");
+                    	break;
+                    
+                    case 9:
+                    	
+                    	CriteriaChain chain = new CriteriaChain();
+
+                    	chain.addCriteria(new NameCriteria("rohan"));
+
+                    	List<Contact> results = searchService.search(chain);
+
+                    	results.forEach(c ->
+                    	        System.out.println(c.getName()+" "+c.getId())
+                    	);
                     	break;
                     
                     default:
