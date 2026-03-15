@@ -1,9 +1,7 @@
 package com.mycontactapp.contact.bulk;
 
-import java.util.List;
-
 import com.mycontactapp.contact.composite.ContactComponent;
-import com.mycontactapp.contact.model.Contact;
+import com.mycontactapp.contact.tag.Tag;
 
 public class BulkOperationService {
 
@@ -14,7 +12,7 @@ public class BulkOperationService {
                 .forEach(c -> c.setDeleted(true));
     }
 
-    public void addTag(ContactComponent component,String tag){
+    public void addTag(ContactComponent component,Tag tag){
 
         component.getContacts()
                 .stream()

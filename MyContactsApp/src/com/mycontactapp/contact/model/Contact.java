@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import com.mycontactapp.contact.memento.ContactMemento;
+import com.mycontactapp.contact.tag.Tag;
 
 public abstract class Contact {
 
@@ -15,7 +16,7 @@ public abstract class Contact {
 
     private final LocalDateTime createdAt;
     
-    private List<String> tags = new ArrayList<>();
+    Set<Tag> tags = new HashSet<>();
     
     private int interactionCount;
 
@@ -75,13 +76,13 @@ public abstract class Contact {
         this.deleted = deleted;
     }
     
-    public void addTag(String tag){
+    public void addTag(Tag tag){
 
         tags.add(tag);
 
     }
 
-    public List<String> getTags(){
+    public Set<Tag> getTags(){
 
         return tags;
 

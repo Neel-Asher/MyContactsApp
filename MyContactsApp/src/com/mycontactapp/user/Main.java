@@ -21,6 +21,8 @@ import com.mycontactapp.contact.search.ContactSearchService;
 import com.mycontactapp.contact.search.CriteriaChain;
 import com.mycontactapp.contact.search.NameCriteria;
 import com.mycontactapp.contact.service.ContactService;
+import com.mycontactapp.contact.tag.Tag;
+import com.mycontactapp.contact.tag.TagService;
 import com.mycontactapp.contact.view.BaseContactView;
 import com.mycontactapp.contact.view.ContactView;
 import com.mycontactapp.contact.view.MaskEmailDecorator;
@@ -56,6 +58,8 @@ public class Main {
         ContactSearchService searchService = new ContactSearchService();
         
         FilterService filterService = new FilterService();	
+        
+        TagService tagService = new TagService();
 
         try {
 
@@ -112,6 +116,7 @@ public class Main {
                 System.out.println("8. Bulk Delete");
                 System.out.println("9. Search Contacts");
                 System.out.println("10. Advanced Search");
+                System.out.println("11. Create and Manage Tags");
 
                 System.out.print("Choose option: ");
                 int choice = Integer.parseInt(sc.nextLine());
@@ -292,6 +297,28 @@ public class Main {
                     	                Comparator.comparing(Contact::getName)
                     	        );
                     	break;
+                    
+                    case 11:
+                    	
+                    	Tag workTag = tagService.createTag("Work");
+                    	
+                    	System.out.print("Enter Contact ID to tag: ");
+                    	UUID contactId1 = UUID.fromString(sc.nextLine());
+                    		
+                    	Optional<Contact> contactOpt2 =
+						        contactService.getContact(contactId1);
+                    		
+						if(contactOpt2.isPresent()) {
+						    tagService.addTag(workTag, contactOpt2.get());
+						    System.out.println("Tag added to contact.");
+						} else {
+						    System.out.println("Contact not found.");
+						}
+						
+						List<Contact> taggedContacts = tagService.getContactsByTag(workTag);
+						System.out.println("Contacts with 'Work' tag:");
+						taggedContacts.forEach(c -> System.out.println(c.getName()));
+						break;
                     
                     default:
                         System.out.println("Invalid option.");
