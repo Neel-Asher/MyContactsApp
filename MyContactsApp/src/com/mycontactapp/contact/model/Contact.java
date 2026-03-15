@@ -3,12 +3,14 @@ package com.mycontactapp.contact.model;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import com.mycontactapp.contact.memento.ContactMemento;
+
 public abstract class Contact {
 
     private final UUID id;
     private String name;
 
-    private List<PhoneNumber> phoneNumbers = new ArrayList<>();
+	private List<PhoneNumber> phoneNumbers = new ArrayList<>();
     private List<EmailAddress> emails = new ArrayList<>();
 
     private final LocalDateTime createdAt;
@@ -38,4 +40,24 @@ public abstract class Contact {
     public LocalDateTime getCreatedAt() { return createdAt; }
 
     public abstract String getContactType();
+    
+    public void setName(String name) {
+		this.name = name;
+	}
+    
+    public ContactMemento saveState() {
+
+        return new ContactMemento(
+                this.name,
+                new ArrayList<>(this.phoneNumbers),
+                new ArrayList<>(this.emails)
+        );
+    }
+
+    public void restoreState(ContactMemento memento) {
+
+        this.name = memento.getName();
+        this.phoneNumbers = new ArrayList<>(memento.getPhones());
+        this.emails = new ArrayList<>(memento.getEmails());
+    }
 }

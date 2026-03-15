@@ -87,6 +87,7 @@ public class Main {
                 System.out.println("3. Update Preference");
                 System.out.println("4. Create Contact");
                 System.out.println("5. View Contacts");
+                System.out.println("6. Edit Contact");
 
                 System.out.print("Choose option: ");
                 int choice = Integer.parseInt(sc.nextLine());
@@ -175,6 +176,27 @@ public class Main {
                         }
 
                         break;
+                    
+                    case 6:
+                    	
+                    	System.out.print("Enter Contact ID: ");
+
+                    	UUID id = UUID.fromString(sc.nextLine());
+
+                    	Optional<Contact> contactOpt1 =
+                    	        contactService.getContact(id);
+
+                    	if(contactOpt1.isPresent()){
+
+                    	    System.out.print("Enter New Name: ");
+
+                    	    String newName = sc.nextLine();
+
+                    	    contactService.editContact(contactOpt1.get(),newName);
+
+                    	    System.out.println("Contact updated.");
+                    	}
+                    	break;
                     
                     default:
                         System.out.println("Invalid option.");
