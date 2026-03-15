@@ -37,4 +37,10 @@ public class ContactRepository {
 
         return Optional.of(contact);
     }
+    
+    public List<Contact> getAllContacts(){
+
+        return new ArrayList<>(contacts.values());
+
+    }
 }

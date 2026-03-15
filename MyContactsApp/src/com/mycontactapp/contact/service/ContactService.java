@@ -88,4 +88,8 @@ public class ContactService {
         notifyDeletion(contact);
 
     }
+
+	public List<Contact> getAllContacts() {
+		return repo.findAll();
+	}
 }

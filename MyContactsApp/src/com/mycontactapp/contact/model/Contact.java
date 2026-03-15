@@ -14,6 +14,8 @@ public abstract class Contact {
     private List<EmailAddress> emails = new ArrayList<>();
 
     private final LocalDateTime createdAt;
+    
+    private List<String> tags = new ArrayList<>();
 
     protected Contact(String name,List<PhoneNumber> phones,List<EmailAddress> emails) {
 
@@ -69,5 +71,17 @@ public abstract class Contact {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+    
+    public void addTag(String tag){
+
+        tags.add(tag);
+
+    }
+
+    public List<String> getTags(){
+
+        return tags;
+
     }
 }

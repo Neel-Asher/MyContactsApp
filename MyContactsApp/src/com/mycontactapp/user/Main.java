@@ -1,10 +1,15 @@
 package com.mycontactapp.user;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.UUID;
 
 import com.mycontactapp.contact.builder.ContactBuilder;
+import com.mycontactapp.contact.bulk.BulkOperationService;
+import com.mycontactapp.contact.bulk.ExportService;
+import com.mycontactapp.contact.composite.ContactGroup;
+import com.mycontactapp.contact.composite.SingleContact;
 import com.mycontactapp.contact.model.Contact;
 import com.mycontactapp.contact.service.ContactService;
 import com.mycontactapp.contact.view.BaseContactView;
@@ -36,6 +41,9 @@ public class Main {
         UserRepository repo = UserRepository.getInstance();
         
         ContactService contactService = new ContactService();
+        
+        BulkOperationService bulkService = new BulkOperationService();
+        ExportService exportService = new ExportService();
 
         try {
 
@@ -89,6 +97,7 @@ public class Main {
                 System.out.println("5. View Contacts");
                 System.out.println("6. Edit Contact");
                 System.out.println("7. Delete Contact");
+                System.out.println("8. Bulk Delete");
 
                 System.out.print("Choose option: ");
                 int choice = Integer.parseInt(sc.nextLine());
@@ -222,6 +231,19 @@ public class Main {
                         }
 
                         break;
+                    
+                    case 8:
+                    	
+                    	List<Contact> contacts = contactService.getAllContacts();
+
+                    	ContactGroup group = new ContactGroup();
+
+                    	contacts.forEach(c -> group.add(new SingleContact(c)));
+
+                    	bulkService.bulkDelete(group);
+
+                    	System.out.println("Bulk delete completed.");
+                    	break;
                     
                     default:
                         System.out.println("Invalid option.");
