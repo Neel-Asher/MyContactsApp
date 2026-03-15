@@ -56,4 +56,8 @@ public class Tag {
 		TagService.getInstance().addTag(this, contact);
 		
 	}
+
+	public String toLowerCase() {
+		return name.toLowerCase();
+	}
 }

@@ -8,7 +8,6 @@ import java.util.UUID;
 
 import com.mycontactapp.contact.builder.ContactBuilder;
 import com.mycontactapp.contact.bulk.BulkOperationService;
-import com.mycontactapp.contact.bulk.ExportService;
 import com.mycontactapp.contact.composite.ContactGroup;
 import com.mycontactapp.contact.composite.SingleContact;
 import com.mycontactapp.contact.filter.CompositeFilter;
@@ -21,6 +20,7 @@ import com.mycontactapp.contact.search.ContactSearchService;
 import com.mycontactapp.contact.search.CriteriaChain;
 import com.mycontactapp.contact.search.NameCriteria;
 import com.mycontactapp.contact.service.ContactService;
+import com.mycontactapp.contact.service.ContactTagService;
 import com.mycontactapp.contact.tag.Tag;
 import com.mycontactapp.contact.tag.TagService;
 import com.mycontactapp.contact.view.BaseContactView;
@@ -60,6 +60,8 @@ public class Main {
         FilterService filterService = new FilterService();	
         
         TagService tagService = new TagService();
+
+        ContactTagService contactTagService = new ContactTagService();
 
         try {
 
@@ -117,6 +119,7 @@ public class Main {
                 System.out.println("9. Search Contacts");
                 System.out.println("10. Advanced Search");
                 System.out.println("11. Create and Manage Tags");
+                System.out.println("12. Apply Tags to Contacts");
 
                 System.out.print("Choose option: ");
                 int choice = Integer.parseInt(sc.nextLine());
@@ -320,6 +323,21 @@ public class Main {
 						taggedContacts.forEach(c -> System.out.println(c.getName()));
 						break;
                     
+                    case 12:
+                    	
+                    	Contact contact1 = contactService.getAllContacts().get(0);
+                    	
+                    	Tag work = tagService.createTag("Work");
+
+                    	Tag family = tagService.createTag("Family");
+
+                    	contactTagService.assignTag(contact1, work);
+
+                    	contactTagService.assignTag(contact1, family);
+
+                    	contactTagService.removeTag(contact1, work);
+                    	break;
+                    	
                     default:
                         System.out.println("Invalid option.");
                 }
@@ -332,6 +350,8 @@ public class Main {
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        }
+        } finally {
+			sc.close();
+		}
     }
 }
