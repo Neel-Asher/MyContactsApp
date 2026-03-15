@@ -88,6 +88,7 @@ public class Main {
                 System.out.println("4. Create Contact");
                 System.out.println("5. View Contacts");
                 System.out.println("6. Edit Contact");
+                System.out.println("7. Delete Contact");
 
                 System.out.print("Choose option: ");
                 int choice = Integer.parseInt(sc.nextLine());
@@ -197,6 +198,30 @@ public class Main {
                     	    System.out.println("Contact updated.");
                     	}
                     	break;
+                    
+                    case 7:
+
+                        System.out.print("Enter Contact ID: ");
+
+                        UUID deleteId = UUID.fromString(sc.nextLine());
+
+                        System.out.print("Are you sure? (yes/no): ");
+
+                        String confirm = sc.nextLine();
+
+                        if(confirm.equalsIgnoreCase("yes")){
+
+                            contactService.deleteContact(deleteId);
+
+                            System.out.println("Contact deleted.");
+
+                        } else {
+
+                            System.out.println("Deletion cancelled.");
+
+                        }
+
+                        break;
                     
                     default:
                         System.out.println("Invalid option.");

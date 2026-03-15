@@ -60,4 +60,14 @@ public abstract class Contact {
         this.phoneNumbers = new ArrayList<>(memento.getPhones());
         this.emails = new ArrayList<>(memento.getEmails());
     }
+    
+    private boolean deleted = false;
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
 }

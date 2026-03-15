@@ -26,6 +26,15 @@ public class ContactRepository {
     }
     
     public Optional<Contact> findById(UUID id){
-        return Optional.ofNullable(contacts.get(id));
+
+        Contact contact = contacts.get(id);
+
+        if(contact == null || contact.isDeleted()){
+
+            return Optional.empty();
+
+        }
+
+        return Optional.of(contact);
     }
 }
