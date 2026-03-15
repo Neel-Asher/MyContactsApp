@@ -2,9 +2,15 @@ package com.mycontactapp.user;
 
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.UUID;
 
 import com.mycontactapp.contact.builder.ContactBuilder;
+import com.mycontactapp.contact.model.Contact;
 import com.mycontactapp.contact.service.ContactService;
+import com.mycontactapp.contact.view.BaseContactView;
+import com.mycontactapp.contact.view.ContactView;
+import com.mycontactapp.contact.view.MaskEmailDecorator;
+import com.mycontactapp.contact.view.UpperCaseNameDecorator;
 import com.mycontactapp.user.auth.BasicAuthStrategy;
 import com.mycontactapp.user.command.ChangePasswordCommand;
 import com.mycontactapp.user.command.UpdateNameCommand;
@@ -80,6 +86,7 @@ public class Main {
                 System.out.println("2. Change Password");
                 System.out.println("3. Update Preference");
                 System.out.println("4. Create Contact");
+                System.out.println("5. View Contacts");
 
                 System.out.print("Choose option: ");
                 int choice = Integer.parseInt(sc.nextLine());
@@ -133,11 +140,42 @@ public class Main {
                         .addPhone("9999999999")
                         .addEmail("rohan@mail.com");
 
-                    	contactService.createContact(builder);
+                    	Contact contact = contactService.createContact(builder);
 
-						System.out.println("Contact created successfully.");
+                    	System.out.println("Contact created successfully.");
+                    	System.out.println("Contact ID: " + contact.getId());
 						break;
 
+                    case 5:
+
+                        System.out.print("Enter Contact ID: ");
+                        String idInput = sc.nextLine();
+
+                        UUID contactId = UUID.fromString(idInput);
+
+                        Optional<Contact> contactOpt =
+                                contactService.getContact(contactId);
+
+                        if (contactOpt.isPresent()) {
+
+                            ContactView view =
+                                    new MaskEmailDecorator(
+                                            new UpperCaseNameDecorator(
+                                                    new BaseContactView(contactOpt.get())
+                                            )
+                                    );
+
+                            System.out.println("\n=== CONTACT DETAILS ===");
+                            System.out.println(view.display());
+
+                        } else {
+
+                            System.out.println("Contact not found.");
+
+                        }
+
+                        break;
+                    
                     default:
                         System.out.println("Invalid option.");
                 }

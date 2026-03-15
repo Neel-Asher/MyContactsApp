@@ -24,4 +24,8 @@ public class ContactRepository {
     public List<Contact> findAll(){
         return new ArrayList<>(contacts.values());
     }
+    
+    public Optional<Contact> findById(UUID id){
+        return Optional.ofNullable(contacts.get(id));
+    }
 }
